@@ -87,65 +87,47 @@ public class BankService {
     }
 
     // 메서드 : 모든 계좌에 저축 이자 주기 or 대출 이자 차감
-    public List<AdjustBalaneInfoDTO> totallyAdjustBalance() {
-        List<AdjustBalaneInfoDTO> results = new ArrayList<>();
+    public List<AdjustInterestDTO> totallyAdjustBalance() {
+        List<AdjustInterestDTO> results = new ArrayList<>();
         for (Account account : accounts) {
-            if (account instanceof AccountUtility) {
-                AccountUtility utility = (AccountUtility) account;
-                long beforeBalance = account.balance;
-                utility.adjustBalance();
-                AdjustBalaneInfoDTO result = new AdjustBalaneInfoDTO(account, beforeBalance);
-                results.add(result);
+            long beforeBalance = account.getBalance();
+            account.adjustBalance();
+            long afterBalance = account.getBalance();
+            AdjustInterestDTO result = new AdjustInterestDTO(account, beforeBalance, afterBalance);
+            results.add(result);
             }
-        }
         return results;
     }
 
     // 이자율 확인 후 반환 or 이자율 없음 판단
     public InterestInfoDTO getInterestInfo(String name, int password) {
         Account account = findAccount(name, password);
-
         if (account == null) {
-            // 계좌가 없다는 정보도 DTO로 표현할 수 있지만, 지금은 간단히 null로 처리하자.
             return null;
         }
-        if (account instanceof AccountUtility) {
-            AccountUtility utility = (AccountUtility) account;
-            // 적용 대상이고, 이자율이 얼마인지 DTO에 담아 반환
-            return new InterestInfoDTO(true, utility.getInterestRate());
-        } else {
-            // 적용 대상이 아니라는 정보를 DTO에 담아 반환
-            return new InterestInfoDTO(false, 0.0);
-        }
+        double rate = account.getInterestRate();
+        boolean isApplicable = (rate != 0.0);
+        return new InterestInfoDTO(isApplicable, rate);
     }
+
     // 관리자 버젼 이자율 확인 후 반환 or 이자율 없음 판단
     public InterestInfoDTO getInterestInfo(String name) {
         Account account = directAccessAccount(name);
-
         if (account == null) {
-            // 계좌가 없다는 정보도 DTO로 표현할 수 있지만, 지금은 간단히 null로 처리하자.
             return null;
         }
-        if (account instanceof AccountUtility) {
-            AccountUtility utility = (AccountUtility) account;
-            // 적용 대상이고, 이자율이 얼마인지 DTO에 담아 반환
-            return new InterestInfoDTO(true, utility.getInterestRate());
-        } else {
-            // 적용 대상이 아니라는 정보를 DTO에 담아 반환
-            return new InterestInfoDTO(false, 0.0);
-        }
+        double rate = account.getInterestRate();
+        boolean isApplicable = (rate != 0.0);
+        return new InterestInfoDTO(isApplicable, rate);
     }
+
 
     // 메서드 : 특정 고객 이자율 조정
     public double[] adjustInterestRate(Account account, double changeInterestRate) {
-        if (account instanceof AccountUtility) {
-            AccountUtility utility = (AccountUtility) account;
-            double beforeinterestRate = utility.getInterestRate();
-            utility.adjustInterestRate(changeInterestRate);
-            double afterInterestRate = utility.getInterestRate();
-            return new double[]{beforeinterestRate, afterInterestRate};
-        }
-        return null;
+        double beforeRate = account.getInterestRate();
+        account.adjustInterestRate(changeInterestRate);
+        double afterRate = account.getInterestRate();
+        return new double[]{beforeRate, afterRate};
     }
 
     // 관리자 비밀번호 확인

@@ -1,6 +1,6 @@
 package com.example.bank;
 
-public class LoanAccount extends Account implements AccountUtility {
+public class LoanAccount extends Account {
 
     private double loanInterestRate;
 

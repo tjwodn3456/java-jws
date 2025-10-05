@@ -86,14 +86,15 @@ public class BankView {
         System.out.println("계좌 정보가 일치하지 않습니다.");
     }
 
-   /* // 저축 이자 or 대출 이자 차감 목록 메세지
-    public void printAdjustAccountList(List<AdjustBalaneInfoDTO>results) {
-        for (AdjustBalaneInfoDTO result : results) {
+    // 저축 이자 or 대출 이자 차감 목록 메세지
+    public void printAdjustAccountList(List<AdjustInterestDTO>results) {
+        for (AdjustInterestDTO result : results) {
             String userName = result.getAccount().getUserName();
             long before = result.getBeforeBalance();
-            System.out.println(userName + " 에게 이자 지급 or 차감 완료. 기존 잔액: " + before + " 원. 현재 잔액 " + account.balance + " 원.");
+            long after = result.getAfterBalance();
+            System.out.println(userName + " 에게 이자 지급 or 차감 완료. 기존 잔액: " + before + " 원. 현재 잔액 " + after + " 원.");
         }
-    }   */
+    }
 
 
     public String[] askAccountCredentials() {
@@ -104,7 +105,7 @@ public class BankView {
         return new String[]{name, password};
     }
 
-    public void displayInterenstInfo(InterestInfoDTO dto) {
+    public void displayInterestInfo(InterestInfoDTO dto) {
         if (dto == null) {
             System.out.println("계좌 정보가 일치하지 않습니다.");
             return;

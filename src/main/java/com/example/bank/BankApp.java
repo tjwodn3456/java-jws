@@ -102,7 +102,7 @@ public class BankApp {
                         Account account = service.findAccount(checkInterestName, userPassword);
                         if (account != null) {
                             InterestInfoDTO dto = service.getInterestInfo(checkInterestName, userPassword);
-                            view.displayInterenstInfo(dto);
+                            view.displayInterestInfo(dto);
                         }
                     } else {
                         view.printNoPassword();
@@ -144,7 +144,7 @@ public class BankApp {
                     String targetUser = view.askAccountUserName();
                     Account targetAccount = service.directAccessAccount(targetUser);
                     InterestInfoDTO dto =service.getInterestInfo(targetUser);
-                    view.displayInterenstInfo(dto);
+                    view.displayInterestInfo(dto);
                     double changeInterestRate = view.askChangeInterestRate();
                     service.adjustInterestRate(targetAccount, changeInterestRate);
                     break;

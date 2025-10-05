@@ -1,6 +1,6 @@
 package com.example.bank;
 
-public class SavingAccount extends Account implements AccountUtility {
+public class SavingAccount extends Account {
 
     private double savingInterestRate;
 
@@ -22,7 +22,7 @@ public class SavingAccount extends Account implements AccountUtility {
     }
     // Account Benefit : 이자율 조정
     @Override
-    public void adjustInterestRate(double amount) {
-        this.savingInterestRate = amount;
+    public void adjustInterestRate(double input) {
+        this.savingInterestRate = input;
     }
 }
