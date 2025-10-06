@@ -1,12 +1,15 @@
 package com.example.bank;
 
+import static com.example.bank.InterestCalculator.calculateInterestRate;
+
 public class LoanAccount extends Account {
 
     private double loanInterestRate;
-
-    public LoanAccount(String userName, int password, long balance, double loanInterestRate) {
+    
+    // 생성자
+    public LoanAccount(String userName, int password, long balance, LoanType loanType, CreditTier creditTier) {
         super(userName, password, balance);
-        this.loanInterestRate = loanInterestRate;
+        this.loanInterestRate = calculateInterestRate(loanType, creditTier);
     }
 
     // 대출 이자 차감

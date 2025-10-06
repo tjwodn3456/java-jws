@@ -1,12 +1,16 @@
 package com.example.bank;
 
+import com.example.calculator.Calculator;
+
+import static com.example.bank.InterestCalculator.calculateInterestRate;
+
 public class SavingAccount extends Account {
 
     private double savingInterestRate;
 
-    public SavingAccount(String userName, int password, long balance, double interestRate) {
+    public SavingAccount(String userName, int password, long balance, SavingType savingType, CreditTier creditTier) {
         super(userName, password, balance);
-        this.savingInterestRate = interestRate;
+        this.savingInterestRate = calculateInterestRate(savingType, creditTier);
     }
 
     // 이자 지급

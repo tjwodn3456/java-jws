@@ -1,5 +1,7 @@
 package com.example.bank;
 
+import java.util.List;
+
 public class BankApp {
     private static final int MENU_DEPOSIT = 1; // 상수를 이용한 Magic Number 기피
     private static final int MENU_WITHDRAW = 2;
@@ -41,7 +43,7 @@ public class BankApp {
                         }
                     } else {
                         view.printNoPassword();
-                        return;
+                        break;
                     }
                     break;
                 case MENU_WITHDRAW:
@@ -55,7 +57,7 @@ public class BankApp {
                         }
                     } else {
                         view.printNoPassword();
-                        return;
+                        break;
                     }
                     break;
                 case MENU_GET_BALANCE:
@@ -68,14 +70,14 @@ public class BankApp {
                         }
                     } else {
                         view.printNoAccount();
-                        return;
+                        break;
                     }
                     break;
                 case MENU_NEW_ACCOUNT:
                     String newName = view.askName();
                     if (service.isNameExists(newName)) {
                         view.printStackName();
-                        return;
+                        break;
                     }
                     int newPassword = view.askPssword();
                     long newBalance = view.askbalance();
@@ -86,12 +88,30 @@ public class BankApp {
                     String savingName = view.askName();
                     if (service.isNameExists(savingName)) {
                         view.printStackName();
-                        return;
+                        break;
                     }
                     int newSavingPassword = view.askPssword();
                     long newSavingBalance = view.askbalance();
-                    double newInterestRate = view.askInterestRate();
-                    service.createNewSavingAccount(savingName, newSavingPassword, newSavingBalance, newInterestRate);
+                    SavingType savingProduct;
+                    CreditTier creditTier;
+                    while(true) {
+                        view.printSavingProductList(SavingType.getSavingProducts());
+                        String selectProduct = view.askProductName();
+                        savingProduct = SavingType.fromString(selectProduct);
+                        if (savingProduct != null) {
+                            break;
+                        }
+                        view.printNoProduct();
+                    }
+                    while(true) {
+                        String selectCreditTier = view.askCreditTier();
+                        creditTier = CreditTier.fromString(selectCreditTier);
+                        if (creditTier != null) {
+                            break;
+                        }
+                        view.printNoCreditTier();
+                    }
+                    service.createNewSavingAccount(savingName, newSavingPassword, newSavingBalance, savingProduct, creditTier);
                     view.printRegistSuccess();
                     break;
 
@@ -106,7 +126,7 @@ public class BankApp {
                         }
                     } else {
                         view.printNoPassword();
-                        return;
+                        break;
                     }
                     break;
 

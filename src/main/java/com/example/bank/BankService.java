@@ -1,6 +1,7 @@
 package com.example.bank;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.List;
 
@@ -17,8 +18,8 @@ public class BankService {
 
 
     // 메서드 : 신규 적금 계좌
-    public void createNewSavingAccount(String name, int password, long balance, double interestRate) {
-        SavingAccount account = new SavingAccount(name, password, balance, interestRate);
+    public void createNewSavingAccount(String name, int password, long balance, SavingType savingType, CreditTier creditTier) {
+        SavingAccount account = new SavingAccount(name, password, balance, savingType, creditTier);
         accounts.add(account);
     }
 
@@ -41,6 +42,18 @@ public class BankService {
                 }
             } return null; // 못 찾았으면 null 반환
         }
+
+    // 통합(Saving, Loan) 상품 목록 찾기
+    public List<Product> getAllProducts(){
+        List<Product> allProducts = new ArrayList<>();
+        allProducts.addAll(Arrays.asList(SavingType.values()));
+        allProducts.addAll(Arrays.asList(LoanType.values()));
+        return allProducts;
+    }
+
+
+
+
 
     // 메서드 : 입금 하기
     public void deposit(Account account, long amount) {

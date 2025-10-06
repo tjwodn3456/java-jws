@@ -34,14 +34,35 @@ public class BankView {
         scanner.nextLine();
         return balance;
     }
-
-    // 초기 이자  설정
-    public double askInterestRate() {
-        System.out.print("이자율을 입력하세요: ");
-        double amount = scanner.nextDouble();
-        scanner.nextLine();
-        return amount;
+    // 저축 상품 목록 출력
+    public void printSavingProductList (List<SavingType> savingTypes) {
+        System.out.println("=== 예금 상품 목록 ===");
+        for (SavingType type : savingTypes) {
+            System.out.print(type.name());
+        }
     }
+
+    // 대출 상품 목록 출력
+    public void printLoanProductList (List<LoanType> loanTypes) {
+        System.out.println("=== 대출 상품 목록 ===");
+        for (LoanType type : loanTypes) {
+            System.out.print(type.name());
+        }
+    }
+
+    // 초기 상품  설정
+    public String askProductName() {
+        System.out.print("상품을 선택하세요: ");
+        String input = scanner.nextLine();
+        return input;
+    }
+    // 초기 신용 등급  설정
+    public String askCreditTier() {
+        System.out.print("신용 등급을 입력하세요(A, B, C): ");
+        String input = scanner.nextLine();
+        return input;
+    }
+    
 
     // 초기 계좌 설정 완료 메시지
     public void printRegistSuccess() {
@@ -74,6 +95,14 @@ public class BankView {
     // 잔액 출력
     public void printBalance(Account account) {
         System.out.println("현재 잔액은 " + account.balance + "원 입니다.");
+    }
+    // 틀린 상품 입력 시  출력 메세지
+    public void printNoProduct() {
+        System.out.println("상품 이름이 일치하지 않습니다.");
+    }
+    // 틀린 신용 등급 입력 시  출력 메세지
+    public void printNoCreditTier() {
+        System.out.println("신용 등급이 일치하지 않습니다.");
     }
 
     // 틀린 비밀번호 출력 메세지
