@@ -9,7 +9,6 @@ import java.util.List;
 public class BankService {
     private ArrayList<Account> accounts = new ArrayList<>();
 
-
     // 메서드 : 신규 계좌 , 이름을 입력 받으려 할때 숫자가 섞이는 경우는 어떻게 하지?
     public void createNewAccount(String name, int password, long balance) {
         Account account = new Account(name, password, balance);
@@ -54,13 +53,11 @@ public class BankService {
 
     // 메서드 : 입금 하기
     public void deposit(Account account, long amount) {
-        Account account1 = findAccount(account.userName, account.password);
         account.deposit(amount); // 해당 계좌 객체에게 입금을 '위임'한다
     }
 
     // 메서드 : 출금 하기
     public void withdraw(Account account, long amount) {
-        Account account1 = findAccount(account.userName, account.password);
         account.withdraw(amount); // 해당 계좌 객체에게 출금을 '위임'한다
     }
 
