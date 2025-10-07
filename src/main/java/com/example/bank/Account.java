@@ -24,10 +24,11 @@ public class Account extends AccountData {
     public void withdraw(long amount) {
         while (true) {
             if (this.balance < amount || amount < 0) {
-                System.out.println("입금액은 잔액을 초과하거나, 0원 작을 수 없습니다. 다시 입력하세요");
+                System.out.println("입금액은 잔액을 초과하거나, 0원보다 작을 수 없습니다. 다시 입력하세요");
             } else {
                 this.balance -= amount;
                 System.out.println(amount + "원 출금이 완료되었습니다. 현재 잔액: " + this.balance);
+                break;
             }
         }
     }
