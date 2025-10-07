@@ -33,103 +33,23 @@ public class BankApp {
             }
             switch (menu) {
                 case MENU_DEPOSIT:
-                    String depositName = view.askAccountUserName();
-                    if (service.isNameExists(depositName)) {
-                        int userPassword = view.askPssword();
-                        Account account = service.findAccount(depositName, userPassword);
-                        if (account != null) {
-                            long deposit = view.askDepositAmount();
-                            service.deposit(account, deposit);
-                        }
-                    } else {
-                        view.printNoPassword();
-                        break;
-                    }
+                    new DepositAction().execute();
                     break;
                 case MENU_WITHDRAW:
-                    String withdrawName = view.askAccountUserName();
-                    if (service.isNameExists(withdrawName)) {
-                        int userPassword = view.askPssword();
-                        Account account = service.findAccount(withdrawName, userPassword);
-                        if (account != null) {
-                            long withdraw = view.askWithdrawAmount();
-                            service.withdraw(account, withdraw);
-                        }
-                    } else {
-                        view.printNoPassword();
-                        break;
-                    }
+                    new WithDrawAction().execute();
                     break;
                 case MENU_GET_BALANCE:
-                    String getBalanceName = view.askAccountUserName();
-                    if (service.isNameExists(getBalanceName)) {
-                        int userPassword = view.askPssword();
-                        Account account = service.findAccount(getBalanceName, userPassword);
-                        if (account != null) {
-                            view.printBalance(account);
-                        }
-                    } else {
-                        view.printNoAccount();
-                        break;
-                    }
+                    new GetBalanceAction().execute();
                     break;
                 case MENU_NEW_ACCOUNT:
-                    String newName = view.askName();
-                    if (service.isNameExists(newName)) {
-                        view.printStackName();
-                        break;
-                    }
-                    int newPassword = view.askPssword();
-                    long newBalance = view.askbalance();
-                    service.createNewAccount(newName, newPassword, newBalance);
-                    view.printRegistSuccess();
+                    new NewAccountAction().execute();
                     break;
                 case MENU_NEW_SAVING_ACCOUNT:
-                    String savingName = view.askName();
-                    if (service.isNameExists(savingName)) {
-                        view.printStackName();
-                        break;
-                    }
-                    int newSavingPassword = view.askPssword();
-                    long newSavingBalance = view.askbalance();
-                    SavingType savingProduct;
-                    CreditTier creditTier;
-                    while(true) {
-                        view.printSavingProductList(SavingType.getSavingProducts());
-                        String selectProduct = view.askProductName();
-                        savingProduct = SavingType.fromString(selectProduct);
-                        if (savingProduct != null) {
-                            break;
-                        }
-                        view.printNoProduct();
-                    }
-                    while(true) {
-                        String selectCreditTier = view.askCreditTier();
-                        creditTier = CreditTier.fromString(selectCreditTier);
-                        if (creditTier != null) {
-                            break;
-                        }
-                        view.printNoCreditTier();
-                    }
-                    service.createNewSavingAccount(savingName, newSavingPassword, newSavingBalance, savingProduct, creditTier);
-                    view.printRegistSuccess();
+                    new NewSavingAccountAction().execute();
                     break;
-
                 case MENU_CHECK_ACCOUNT_INTEREST_RATE:
-                    String checkInterestName = view.askAccountUserName();
-                    if (service.isNameExists(checkInterestName)) {
-                        int userPassword = view.askPssword();
-                        Account account = service.findAccount(checkInterestName, userPassword);
-                        if (account != null) {
-                            InterestInfoDTO dto = service.getInterestInfo(checkInterestName, userPassword);
-                            view.displayInterestInfo(dto);
-                        }
-                    } else {
-                        view.printNoPassword();
-                        break;
-                    }
+                    new CheckAccountInterestRate().execute();
                     break;
-
                 case MENU_STAFF_ONLY:
                     setMenuStaffOnly();
                     break;
@@ -139,7 +59,6 @@ public class BankApp {
             }
         }
     }
-
     // 메서드 : STAFF ONLY
     private void setMenuStaffOnly() {
         int menu = 0;
@@ -163,7 +82,7 @@ public class BankApp {
                 case MENU_INTEREST_RATE_CHANGE:
                     String targetUser = view.askAccountUserName();
                     Account targetAccount = service.directAccessAccount(targetUser);
-                    InterestInfoDTO dto =service.getInterestInfo(targetUser);
+                    BankService.InterestInfoDTO dto =service.getInterestInfo(targetUser);
                     view.displayInterestInfo(dto);
                     double changeInterestRate = view.askChangeInterestRate();
                     service.adjustInterestRate(targetAccount, changeInterestRate);
@@ -176,7 +95,115 @@ public class BankApp {
                     return;
                 }
             }
-        }
+            private class DepositAction {
+                private void execute() {
+                    String depositName = view.askAccountUserName();
+                    if (service.isNameExists(depositName)) {
+                        int userPassword = view.askPssword();
+                        Account account = service.findAccount(depositName, userPassword);
+                        if (account != null) {
+                            long deposit = view.askDepositAmount();
+                            service.deposit(account, deposit);
+                        }
+                    } else {
+                        view.printNoPassword();
+                    }
+                }
+            }
+            private class WithDrawAction {
+                private void execute() {
+                    String withdrawName = view.askAccountUserName();
+                    if (service.isNameExists(withdrawName)) {
+                        int userPassword = view.askPssword();
+                        Account account = service.findAccount(withdrawName, userPassword);
+                        if (account != null) {
+                            long withdraw = view.askWithdrawAmount();
+                            service.withdraw(account, withdraw);
+                        }
+                    } else {
+                        view.printNoPassword();
+                    }
+                }
+            }
+            private class GetBalanceAction{
+                private void execute(){
+                    String getBalanceName = view.askAccountUserName();
+                    if (service.isNameExists(getBalanceName)) {
+                        int userPassword = view.askPssword();
+                        Account account = service.findAccount(getBalanceName, userPassword);
+                        if (account != null) {
+                            view.printBalance(account);
+                        }
+                    } else {
+                        view.printNoAccount();
+                    }
+                }
+            }
+            private class NewAccountAction{
+                private void execute(){
+                    String newName = view.askName();
+                    if (service.isNameExists(newName)) {
+                        view.printStackName();
+                    }
+                    int newPassword = view.askPssword();
+                    long newBalance = view.askbalance();
+                    service.createNewAccount(newName, newPassword, newBalance);
+                    view.printRegistSuccess();
+                }
+            }
+            private class NewSavingAccountAction{
+                private void execute() {
+                    String savingName;
+                    while (true) {
+                        savingName = view.askName();
+                        if (service.isNameExists(savingName)) {
+                            view.printStackName();
+                            continue;
+                        }
+                        break;
+                    }
+                    int newSavingPassword = view.askPssword();
+                    long newSavingBalance = view.askbalance();
+                    SavingType savingProduct;
+                    CreditTier creditTier;
+                    while (true) {
+                        view.printSavingProductList(SavingType.getSavingProducts());
+                        String selectProduct = view.askProductName();
+                        savingProduct = SavingType.fromString(selectProduct);
+                        if (savingProduct != null) {
+                            break;
+                        }
+                        view.printNoProduct();
+                    }
+                    while (true) {
+                        String selectCreditTier = view.askCreditTier();
+                        creditTier = CreditTier.fromString(selectCreditTier);
+                        if (creditTier != null) {
+                            break;
+                        }
+                        view.printNoCreditTier();
+                    }
+                    service.createNewSavingAccount(savingName, newSavingPassword, newSavingBalance, savingProduct, creditTier);
+                    view.printRegistSuccess();
+                }
+            }
+            private class CheckAccountInterestRate{
+                private void execute(){
+                    String checkInterestName = view.askAccountUserName();
+                    if (service.isNameExists(checkInterestName)) {
+                        int userPassword = view.askPssword();
+                        Account account = service.findAccount(checkInterestName, userPassword);
+                        if (account != null) {
+                            BankService.InterestInfoDTO dto = service.getInterestInfo(checkInterestName, userPassword);
+                            view.displayInterestInfo(dto);
+                        }
+                    } else {
+                        view.printNoPassword();
+                    }
+                }
+            }
+
+    }
 
 
 

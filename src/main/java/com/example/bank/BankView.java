@@ -116,8 +116,8 @@ public class BankView {
     }
 
     // 저축 이자 or 대출 이자 차감 목록 메세지
-    public void printAdjustAccountList(List<AdjustInterestDTO>results) {
-        for (AdjustInterestDTO result : results) {
+    public void printAdjustAccountList(List<BankService.AdjustInterestDTO>results) {
+        for (BankService.AdjustInterestDTO result : results) {
             String userName = result.getAccount().getUserName();
             long before = result.getBeforeBalance();
             long after = result.getAfterBalance();
@@ -134,7 +134,7 @@ public class BankView {
         return new String[]{name, password};
     }
 
-    public void displayInterestInfo(InterestInfoDTO dto) {
+    public void displayInterestInfo(BankService.InterestInfoDTO dto) {
         if (dto == null) {
             System.out.println("계좌 정보가 일치하지 않습니다.");
             return;

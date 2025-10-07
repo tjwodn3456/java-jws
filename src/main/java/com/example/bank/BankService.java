@@ -52,9 +52,6 @@ public class BankService {
     }
 
 
-
-
-
     // 메서드 : 입금 하기
     public void deposit(Account account, long amount) {
         Account account1 = findAccount(account.userName, account.password);
@@ -163,5 +160,44 @@ public class BankService {
         return menu;
     }
 
+    public static class AdjustInterestDTO {
+        private final Account account;  // 해당 account 객체
+        private final long beforeBalance; // 해당 account 객체의 원금
+        private final long afterBalance;
 
+        public AdjustInterestDTO(Account account, long beforeBalance, long afterBalance) {
+            this.account = account;
+            this.beforeBalance = beforeBalance;
+            this.afterBalance = afterBalance;
+        }
+
+        public Account getAccount(){
+            return account;
+        }
+
+        public long getBeforeBalance(){
+            return beforeBalance;
+        }
+        public long getAfterBalance(){
+            return afterBalance;
+        }
+    }
+    public static class InterestInfoDTO {
+        private final boolean isApplicable; // 이자율 적용 대상 여부
+        private final double interestRate;  // 이자율
+
+        public InterestInfoDTO(boolean isApplicable, double interestRate) {
+            this.isApplicable = isApplicable;
+            this.interestRate = interestRate;
+        }
+
+        // View가 데이터를 꺼내 쓸 수 있도록 Getter 메서드를 열어둔다.
+        public boolean isApplicable() {
+            return isApplicable;
+        }
+
+        public double getInterestRate() {
+            return interestRate;
+        }
+    }
 }
